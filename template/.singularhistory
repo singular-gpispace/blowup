@@ -1,0 +1,5 @@
+exit
+;
+ring r= 0 ,x,dp;
+ideal I=x+1;
+exit;

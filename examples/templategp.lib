@@ -1,0 +1,86 @@
+ ///////////////////////////////////////
+       version="version templategp.lib 0.1 Sept_2022 ";
+       category="Algebraic geometry";
+       info="
+       LIBRARY: templategp.lib  demo procedures for template pattern
+
+       OVERVIEW:
+           This library contains SINGULAR procedures to demonstrate the
+            the Singular/GPI-Space framework.
+           The newstruct types token  must be defined.
+
+       PROCEDURES:
+       stdmodp(token,token)               computes a standard basis
+                                           modulo p
+       
+";
+
+LIB "ring.lib";
+LIB "elim.lib";
+
+proc BlowUpAff(token T)
+"USAGE: BlowUpAff(T); T token
+ASSUME: T contains a chart and a center
+RETURN: token output containing the blow up of the chart at the given center
+EXAMPLE: example BlowUpAff, shows an example"
+{
+newstruct ("chart", "ring in, ideal vari, ideal D");
+chart Q;
+
+Q.vari = T.data[2];
+Q.in = T.data[1];
+//setring in;
+//def S =  basering;
+Q.D = T.data[3];
+ideal C = T.data[4];
+def R = changevar("x()", Q.in);
+def S = changevar("y()", Q.in);
+list L1 = ringlist(R);
+list L2 = ringlist(S);
+L1[2] = L1[2]+L2[2];
+def T = ring(L1);
+chart r;
+r.in = R;
+setring r.in;
+r.vari = 0;
+r.D = 1;
+chart s;
+s.in = S;
+setring s.in;
+s.vari = 0;
+s.D = 1;
+chart t;
+t.in = T;
+setring t.in;
+matrix m[2][nvars(R)];
+for (int i=1; i<=nvars(R); i=i+1) 
+{
+  
+  m[1,i] = m[1,i] + var(i);
+  m[2,i] = m[2,i] + var(i+nvars(R));
+}
+t.vari = minor(m,2);
+ideal J = fetch(Q.in,C); 
+for (int i=1; i<=nvars(R); i=i+1) 
+{
+  t.vari = subst(t.vari, x(i), J[i]); 
+}
+t.D = 1;
+ideal K;
+for (int i=1; i<=nvars(S); i=i+1)
+{
+ K = K + ideal(maxideal(1)[i+nvars(R)]);
+}
+//t.vari;
+t.vari = sat(t.vari,K)[1];
+//t.vari;
+token output;
+output.fieldnames = list ("chart");
+output.data = list(t.in, t.vari, t.D);
+//output.fieldnames = list("chart_in")
+//output.data[1] = vari;
+//output.data[2] = Q.vari;
+//output.data[3] = Q.D;
+return(output);
+}
+

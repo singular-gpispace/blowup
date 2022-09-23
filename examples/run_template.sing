@@ -1,0 +1,38 @@
+LIB "templategspc.lib";
+LIB "random.lib";
+LIB "modstd.lib";
+
+
+
+configToken gc = configure_gspc();
+
+gc.options.tmpdir = "temp";
+gc.options.nodefile = "nodefile";
+gc.options.procspernode = 4;
+gc.options.loghostfile = "loghostfile";
+gc.options.logport = 9876;
+
+configToken pc = configure_template();
+
+pc.options.library = "templategp.lib";
+pc.options.procCompute = "BlowUpAff";
+
+generateIOTokenTypes();
+
+
+ ring R = 0, (a,b,c), dp;
+ ideal vari = 0;
+ ideal D = 1;
+ ideal C = (a-2,b-3,c-5); 
+ token t;
+ t.fieldnames = list ("chart_in", "chart_ideal_vari","chart_ideal_D", "center");
+ t.data[1] = R;
+ t.data[2] = vari;
+ t.data[3] = D;
+ t.data[4] = C;
+list inputlists;
+inputlists = list(t);
+
+
+def re = gspc_template(inputlists,gc, pc);
+
