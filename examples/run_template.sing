@@ -15,15 +15,15 @@ gc.options.logport = 9876;
 configToken pc = configure_template();
 
 pc.options.library = "templategp.lib";
-pc.options.procCompute = "BlowUpAff";
+pc.options.procCompute = "BlowUp";
 
 generateIOTokenTypes();
 
 
- ring R = 0, (a,b,c), dp;
- ideal vari = 0;
+ ring R = 0, (x(1),x(2),x(3)), dp;
+ ideal vari = (x(1)*x(2)^2-x(3)^2);
  ideal D = 1;
- ideal C = (a-2,b-3,c-5); 
+ ideal C = (x(2),x(3));
  token t;
  t.fieldnames = list ("chart_in", "chart_ideal_vari","chart_ideal_D", "center");
  t.data[1] = R;
@@ -33,7 +33,6 @@ generateIOTokenTypes();
 list inputlists;
 inputlists = list(t);
 
-//something
 
 
 def re = gspc_template(inputlists,gc, pc);
