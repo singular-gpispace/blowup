@@ -397,7 +397,8 @@ try {
   }
 
 	lists out_list =  static_cast<lists> (omAlloc0Bin (slists_bin));
-	out_list->Init (as.numTasks());
+//	out_list->Init (as.numTasks());
+	out_list->Init (2);
 	int i = 0;
 	std::pair<int, lists> entry;
 	for(std::multimap<std::string, pnet::type::value::value_type>::iterator it = result.value().begin(); it != result.value().end(); it++)
@@ -405,13 +406,14 @@ try {
 		if( boost::get<std::string>(it->first ) == "output")
 		{
 			entry = deserialize(boost::get<std::string>(it->second),"Result extraction");
-			out_list->m[i].rtyp = entry.first;
+		out_list->m[i].rtyp = entry.first;
 			out_list->m[i].data = entry.second;
 			i = i + 1;
 		}
 	}
-	res->rtyp = LIST_CMD;
+  res->rtyp = LIST_CMD;
 	res->data = out_list;
+
   return FALSE;
 }
 catch (...)

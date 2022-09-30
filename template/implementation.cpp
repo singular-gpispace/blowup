@@ -10,7 +10,7 @@
 #include "singular_functions.hpp"
 NO_NAME_MANGLING
 
-std::string  singular_template_compute( std::string const& input_filename 
+std::vector<std::string>  singular_template_compute( std::string const& input_filename 
 																			, std::string const& function_name
 																			, std::string const& needed_library
 																			, std::string const& base_filename
@@ -27,7 +27,16 @@ std::string  singular_template_compute( std::string const& input_filename
 	input = deserialize(input_filename,ids);
 	ScopedLeftv args( input.first, lCopy(input.second));
 	out = call_user_proc(function_name, needed_library, args);
-	out_filename = serialize(out.second, base_filename, ids);
-	return out_filename;
+	lists u = (lists)omAlloc0Bin(slists_bin);
+	u->Init(2);
+	u = (lists)out.second->m[3].Data();//ring-lists_fieldnames-ring-lists_data;
+	int N = lSize(u);
+	int i;
+	std::vector<std::string> tab;
+	for(i=0;i<N+1;++i)
+	{
+		tab.push_back   (serialize((lists)u->m[i].Data(),base_filename,ids));
+	}
+	return tab;
 }
 

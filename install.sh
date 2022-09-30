@@ -6,3 +6,4 @@ cmake -D CMAKE_INSTALL_PREFIX="../template_install" \
       -S .
 cmake --build template_build --target install -j $(nproc)
 
+
