@@ -10,4 +10,4 @@ To compile the code, you just have to run the bash script 'install.sh' after cha
 
 ## Example
 
-An example of application of the framework is located in '/examples'. It just computes Groebner bases  of a given ideal over several finite fields. To run it, you have to execute the bash script 'run_template.sh' after changing the variable 'SINGULARPATH' (line 5 in run_template.sh') according to your installation directories. The content of "loghostfile' and 'nodefile' has to be changed as well.
+An example of application of the framework is located in '/examples'. It just computes Groebner bases  of a given ideal over several finite fields. To run it, you have to execute the bash script 'run_template.sh' after changing the variable 'SINGULARPATH' (line 5 in run_template.sh') according to your installation directories. The content of "loghostfile' and 'nodefile' has to be changed as well according to your system.
