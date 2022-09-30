@@ -3,7 +3,7 @@
 This reposity provides two implementations of the blowup construction. The branch 'BlowUpAff' finds the blow up of affine space at a given point. The petri net for this consists of an input place, a transition, and an output place. The transition is given by a Singular procedure that calculates the global blow up variety. It uses a ring independent data structure called chart, which consists of a ring and two ideals. The ideals are assumed to be in the ring. The transition takes an input token consisting of a chart which specifies the variety that we want to blow up and an ideal that specifies the center of blow up. It returns an output token with the following information: a chart which specifies the global blow up variety and the exceptional divisor.The branch 'BlowUp' finds the blow up of an arbitrary variety at a given center. The petri net here also consists of an input place, a transition, and an output place. The input token once again has a chart and a center. The transition produces many tokens as output. Each output token consists of a chart and an exceptional divisor where the chart data structure gives the blow up variety in each of the charts induced by the exceptional divisor.
 
 
- Most of  the code is from [Patrick's code](https://github.com/singular-gpispace/template). Data is accessed via the filename where it is stored.
+The code is based on the Singular GPI-Space framework repository [template](https://github.com/singular-gpispace/template). Data is accessed via the filename where it is stored.
 
 
 ## Installation
