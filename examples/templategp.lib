@@ -18,17 +18,23 @@
 LIB "ring.lib";
 LIB "elim.lib";
 
-proc BlowUp(token T)
-"USAGE: BlowUp(X, C); X chart,C ideal
-ASSUME: X.vari is in C
-RETURN: find the blow up of affine variety defined by X.vari at center C
-EXAMPLE: example BlowUp, shows an example"
+proc BlowUpAff(token T)
+"USAGE: BlowUpAff(T); T token
+ASSUME: T contains a chart and a center
+RETURN: token output containing the blow up of the chart at the given center
+EXAMPLE: example BlowUpAff, shows an example"
 {
 newstruct ("chart", "ring in, ideal vari, ideal D");
-def R = T.data[1];
-ideal F = T.data[2];
+chart Q;
+
+Q.vari = T.data[2];
+Q.in = T.data[1];
+//setring in;
+//def S =  basering;
+Q.D = T.data[3];
 ideal C = T.data[4];
-ring S = 0, (y(1..size(fetch(R,C)))), dp;
+def R = changevar("x()", Q.in);
+def S = changevar("y()", Q.in);
 list L1 = ringlist(R);
 list L2 = ringlist(S);
 L1[2] = L1[2]+L2[2];
@@ -36,8 +42,7 @@ def T = ring(L1);
 chart r;
 r.in = R;
 setring r.in;
-ideal X1 = fetch(R,F);
-r.vari = X1;
+r.vari = 0;
 r.D = 1;
 chart s;
 s.in = S;
@@ -47,42 +52,35 @@ s.D = 1;
 chart t;
 t.in = T;
 setring t.in;
-matrix m[2][nvars(S)];
-ideal J = fetch(R,C);
-for (int i=1; i<=nvars(S); i=i+1)
+matrix m[2][nvars(R)];
+for (int i=1; i<=nvars(R); i=i+1) 
 {
   
-  m[1,i] = m[1,i] + var(nvars(R)+i);
-  m[2,i] = m[2,i] + J[i];
+  m[1,i] = m[1,i] + var(i);
+  m[2,i] = m[2,i] + var(i+nvars(R));
 }
 t.vari = minor(m,2);
-ideal X2 = fetch(R,F); 
-t.vari = t.vari + X2; 
+ideal J = fetch(Q.in,C); 
+for (int i=1; i<=nvars(R); i=i+1) 
+{
+  t.vari = subst(t.vari, x(i), J[i]); 
+}
 t.D = 1;
 ideal K;
 for (int i=1; i<=nvars(S); i=i+1)
 {
  K = K + ideal(maxideal(1)[i+nvars(R)]);
 }
+//t.vari;
 t.vari = sat(t.vari,K)[1];
+//t.vari;
 token output;
-list tokens;
-token A;
-for (int i=1; i<=nvars(S); i=i+1) 
-{
-  chart Y(i);
-  Y(i).in = t.in;
-  Y(i).D = y(i)-1;
-  Y(i).vari = subst (t.vari, y(i),1);
-  Y(i).vari = Y(i).vari + Y(i).D;  
-  Y(i).vari = std(Y(i).vari); 
-  output.fieldnames = list ("chart");
-  output.data = list(Y(i).in, Y(i).vari, Y(i).D);
-  tokens[i] = output;
-  A.fieldnames[i] = "blowup" + string(i);
-}
-A.data = tokens;
-
-return(A);
+output.fieldnames = list ("chart");
+output.data = list(t.in, t.vari, t.D);
+//output.fieldnames = list("chart_in")
+//output.data[1] = vari;
+//output.data[2] = Q.vari;
+//output.data[3] = Q.D;
+return(output);
 }
 
