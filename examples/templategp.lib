@@ -2,16 +2,16 @@
        version="version templategp.lib 0.1 Sept_2022 ";
        category="Algebraic geometry";
        info="
-       LIBRARY: templategp.lib  demo procedures for template pattern
+       LIBRARY: templategp.lib  procedure to calculate the blow up of affine space at a point
 
        OVERVIEW:
-           This library contains SINGULAR procedures to demonstrate the
-            the Singular/GPI-Space framework.
-           The newstruct types token  must be defined.
+           This is a library for computing the blow up of an affine variety at a given center.
+           It uses a ring independent chart data structure that consists of a ring and two 
+           ideals, both of which are in the ring. The first ideal defines an algebraic variety,
+           while the second ideal defines by its complement an open set that meets the variety. 
 
        PROCEDURES:
-       stdmodp(token,token)               computes a standard basis
-                                           modulo p
+       BlowUp(token)               computes the blow up of an affine variety at a given center
        
 ";
 
@@ -19,8 +19,8 @@ LIB "ring.lib";
 LIB "elim.lib";
 
 proc BlowUp(token T)
-"USAGE: BlowUp(X, C); X chart,C ideal
-ASSUME: X.vari is in C
+"USAGE: BlowUp(T); T is a token
+ASSUME: T contains a chart X and a center C 
 RETURN: find the blow up of affine variety defined by X.vari at center C
 EXAMPLE: example BlowUp, shows an example"
 {
